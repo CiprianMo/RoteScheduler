@@ -29,6 +29,20 @@ class CalendarEvent():
         event_result = self.service.events().insert(calendarId=self.clID,body = event).execute()
         print ('Event created: %s' % (event_result.get('htmlLink')))
 
+    def valiDate(self,date_text):
+        try :
+            datetime.datetime.strptime(date_text, '%Y-%m-%d')
+        except ValueError:
+            raise ValueError("Incorrect data format, should be YYYY-MM-DD")
+
+    def GetEventsInDateRange(self,dateFrom,dateTo):
+
+        event_results = self.service.events().list(calendarId=self.clID,timeMin = dateFrom,timeMax = dateTo).execute()
+        return event_results
+
+    def DeleteEventWithId(self,calId):
+       return self.service.events().delete(calendarId=self.clID, eventId=calId).execute()
+
     def GetUpComing(self,numOfEvents):
         #call the Calendar API
         now = datetime.datetime.utcnow().isoformat()+'Z' #Z indicates UTC time
@@ -71,3 +85,5 @@ class CalendarEvent():
         }
 
         return event
+
+    

@@ -1,5 +1,29 @@
 from CalendarEvent import CalendarEvent
 from ExcelParser import ExcelParser
+import datetime
+
+class CalendarEventManager():
+    
+    def __init__(self, credentials):
+        self.calendarEvent = CalendarEvent(credentials)
+
+    def deleteEventsInDateRange(self,dateFrom,dateTo):
+        
+            event_results = self.calendarEvent.GetEventsInDateRange(dateFrom,dateTo)
+
+            eventItems = event_results.get('items',[])
+
+            eventsToDelete=[]
+
+            for event in eventItems:
+                if 'location' in event:
+                    if "Kumi" in event['location']:
+                        eventsToDelete.append(event['id'])
+            
+            for eventId in eventsToDelete:
+                deleted = self.calendarEvent.DeleteEventWithId(eventId)
+
+                print(f"Event delete {deleted}")
 
 class Rote():
 
@@ -34,7 +58,7 @@ class Rote():
 
 if __name__ == "__main__":
     credentialsFilePath = 'credentials.json'
-    excelFilePath = 'Shift2018.xlsx'
+    excelFilePath = 'Shift list - Oct 2018.xlsx'
     
     kitchen_color = 10
     front_color = 5
@@ -43,3 +67,10 @@ if __name__ == "__main__":
 
     roter.createEvents('Kitchen',kitchen_color)
     roter.createEvents('Front',front_color)
+
+    # now = datetime.datetime(2018,10,1).isoformat()+'Z'
+
+    # dateTo = datetime.datetime(2018,11,1).isoformat()+'Z'
+
+    # calManager = CalendarEventManager(credentialsFilePath)
+    # calManager.deleteEventsInDateRange(now,dateTo)
