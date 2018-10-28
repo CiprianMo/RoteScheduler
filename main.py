@@ -1,6 +1,8 @@
 from CalendarEvent import CalendarEvent
 from ExcelParser import ExcelParser
+import PdfToExcel
 import datetime
+import sys
 
 class CalendarEventManager():
     
@@ -58,12 +60,13 @@ class Rote():
 
 if __name__ == "__main__":
     credentialsFilePath = 'credentials.json'
-    excelFilePath = 'Shift list - Oct 2018.xlsx'
+    pdfFile = sys.argv[1]
+    excelFilePath = PdfToExcel.convertPdfToExcel(pdfFile)
     
     kitchen_color = 10
     front_color = 5
     
-    roter = Rote(credentialsFilePath,excelFilePath)
+    roter = Rote(credentialsFilePath,excelFilePath[0])
 
     roter.createEvents('Kitchen',kitchen_color)
     roter.createEvents('Front',front_color)

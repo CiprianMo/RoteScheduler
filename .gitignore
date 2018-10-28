@@ -114,3 +114,7 @@ dmypy.json
 credentials.json
 token.json
 
+#other
+.pdf
+.xlsx
+
